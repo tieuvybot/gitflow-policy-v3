@@ -33,28 +33,23 @@
           >GitHub</a
         >
       </nav>
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="mobile-nav"
-        aria-label="Open menu"
-      >
-        <span></span><span></span>
-      </button>
+      <details class="nav-menu">
+        <summary class="nav-toggle" aria-label="Menu">
+          <span></span><span></span>
+        </summary>
+        <nav class="mobile-nav" aria-label="Mobile">
+          <a href="#flow">Flow</a>
+          <a href="#rules">Rules</a>
+          <a href="#setup">Setup</a>
+          <a
+            href="https://github.com/nguyenad1905/gitflow-policy-v3"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+        </nav>
+      </details>
     </header>
-
-    <div id="mobile-nav" class="mobile-nav" hidden>
-      <a href="#flow">Flow</a>
-      <a href="#rules">Rules</a>
-      <a href="#setup">Setup</a>
-      <a
-        href="https://github.com/nguyenad1905/gitflow-policy-v3"
-        target="_blank"
-        rel="noopener noreferrer"
-        >GitHub</a
-      >
-    </div>
 
     <main id="top">
       <section class="hero">
@@ -63,8 +58,10 @@
           <h1>Mandatory branch rules for AI agents — enforced locally.</h1>
           <p class="hero-lead">
             Provider-agnostic policy for Cursor, Claude Code, Codex, Gemini, and
-            more. <code>AGENTS.md</code> sets the rules; hooks fail early when
-            they are broken.
+            more. <code>AGENTS.md</code> sets the rules;
+            <code>pre-commit</code> / <code>pre-push</code> fail early on
+            violations, while <code>post-checkout</code> only warns on protected
+            branches.
           </p>
           <div class="cta-row">
             <a
@@ -81,7 +78,6 @@
           <svg
             class="flow-art"
             viewBox="0 0 640 420"
-            role="img"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -102,7 +98,7 @@
               class="path-draw path-delay"
               d="M80 330 H220 C280 330 280 210 340 210"
               fill="none"
-              stroke="#c45c26"
+              stroke="#a8481f"
               stroke-width="4"
               stroke-linecap="round"
               stroke-opacity="0.85"
@@ -129,8 +125,8 @@
               <text x="520" y="216" text-anchor="middle" fill="#f4f7f8" font-family="IBM Plex Mono, monospace" font-size="14">develop</text>
             </g>
             <g class="node-fade node-delay-3">
-              <rect x="560" y="280" width="72" height="44" rx="8" fill="#c45c26" />
-              <text x="596" y="308" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="14">main</text>
+              <rect x="560" y="280" width="72" height="44" rx="8" fill="#a8481f" />
+              <text x="596" y="308" text-anchor="middle" fill="#ffffff" font-family="IBM Plex Mono, monospace" font-size="14">main</text>
             </g>
             <text
               class="node-fade node-delay-2"
@@ -169,25 +165,45 @@ bugfix/* ──┘</code></pre>
       <section id="rules" class="section section-rules">
         <h2>Hard requirements for agents</h2>
         <p class="section-lead">
-          From <code>AGENTS.md</code> — do not reinterpret, soften, or bypass.
+          All 8 rules from <code>AGENTS.md</code> — do not reinterpret, soften,
+          or bypass.
         </p>
         <ol class="rules-list">
           <li>
-            Edit only on <code>feature/*</code> or <code>bugfix/*</code>. Create
-            the branch before the first change.
+            Before any edit: <code>git branch --show-current</code>. If not on
+            <code>feature/*</code> or <code>bugfix/*</code>, run
+            <code>git switch -c feature/&lt;name&gt;</code> (or
+            <code>bugfix/&lt;name&gt;</code>) first.
           </li>
           <li>
-            Commit and push only on work branches — never on
-            <code>main</code>, <code>develop</code>, or detached HEAD.
-          </li>
-          <li>Never push directly to protected branches.</li>
-          <li>
-            PR targets:
-            <code>feature/*|bugfix/* → develop</code>, then
-            <code>develop → main</code>.
+            Commit and push <strong>only</strong> on <code>feature/*</code> or
+            <code>bugfix/*</code>. Never on <code>main</code>,
+            <code>develop</code>, detached HEAD, or ad-hoc names.
           </li>
           <li>
-            Never skip hooks with <code>--no-verify</code> or similar bypasses.
+            Never push directly to <code>main</code> or <code>develop</code>.
+          </li>
+          <li>
+            Never create local merge commits on <code>main</code> or
+            <code>develop</code>.
+          </li>
+          <li>
+            PR targets: <code>feature/*|bugfix/* → develop</code> only;
+            <code>develop → main</code> only. Never open or merge a PR that
+            breaks this.
+          </li>
+          <li>
+            Push the work branch when the user confirms work is ready, then open
+            the PR.
+          </li>
+          <li>
+            <strong>Never</strong> use <code>--no-verify</code>,
+            <code>--no-gpg-sign</code> to skip hooks, alternate refspecs into
+            protected branches, or any bypass of these rules.
+          </li>
+          <li>
+            If a hook fails: read the ERROR, run the suggested command, retry.
+            Do not bypass the hook.
           </li>
         </ol>
       </section>
@@ -195,7 +211,9 @@ bugfix/* ──┘</code></pre>
       <section id="hooks" class="section">
         <h2>Local hooks reinforce the policy</h2>
         <p class="section-lead">
-          Fail early in the workspace — independent of any AI vendor.
+          Independent of any AI vendor —
+          <code>pre-commit</code> / <code>pre-push</code> block violations;
+          <code>post-checkout</code> warns only.
         </p>
         <ul class="hooks-list">
           <li>
@@ -241,7 +259,5 @@ git config --get core.hooksPath
         — provider-agnostic GitFlow for AI agents.
       </p>
     </footer>
-
-    <script type="module" src="/main.js"></script>
   </body>
 </html>

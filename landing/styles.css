@@ -5,7 +5,7 @@
   --ink-muted: #5a6570;
   --teal: #0d7377;
   --teal-deep: #095456;
-  --ember: #c45c26;
+  --ember: #a8481f;
   --surface: rgba(255, 255, 255, 0.72);
   --line: rgba(26, 31, 36, 0.12);
   --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -109,6 +109,18 @@ code {
   color: var(--teal) !important;
 }
 
+.nav-menu {
+  position: relative;
+}
+
+.nav-menu summary {
+  list-style: none;
+}
+
+.nav-menu summary::-webkit-details-marker {
+  display: none;
+}
+
 .nav-toggle {
   display: flex;
   flex-direction: column;
@@ -132,25 +144,28 @@ code {
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.nav-toggle[aria-expanded="true"] span:first-child {
+.nav-menu[open] .nav-toggle span:first-child {
   transform: translateY(4px) rotate(45deg);
 }
 
-.nav-toggle[aria-expanded="true"] span:last-child {
+.nav-menu[open] .nav-toggle span:last-child {
   transform: translateY(-4px) rotate(-45deg);
 }
 
 .mobile-nav {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 30;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0.75rem 1.25rem 1.25rem;
-  background: rgba(245, 248, 250, 0.95);
-  border-bottom: 1px solid var(--line);
-}
-
-.mobile-nav[hidden] {
-  display: none;
+  min-width: 12rem;
+  padding: 0.75rem;
+  background: rgba(245, 248, 250, 0.98);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 28px rgba(26, 31, 36, 0.1);
 }
 
 .mobile-nav a {
@@ -431,12 +446,8 @@ main {
     display: flex;
   }
 
-  .nav-toggle {
+  .nav-menu {
     display: none;
-  }
-
-  .mobile-nav {
-    display: none !important;
   }
 
   .hero {
