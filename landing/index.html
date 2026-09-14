@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Provider-agnostic GitFlow policy for AI coding agents — enforced by local hooks."
+    />
+    <title>GitFlow Policy v3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand-mark" href="#top">GitFlow Policy v3</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#flow">Flow</a>
+        <a href="#rules">Rules</a>
+        <a href="#setup">Setup</a>
+        <a
+          class="nav-github"
+          href="https://github.com/nguyenad1905/gitflow-policy-v3"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </nav>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Open menu"
+      >
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <div id="mobile-nav" class="mobile-nav" hidden>
+      <a href="#flow">Flow</a>
+      <a href="#rules">Rules</a>
+      <a href="#setup">Setup</a>
+      <a
+        href="https://github.com/nguyenad1905/gitflow-policy-v3"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >
+    </div>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="brand-hero">GitFlow Policy v3</p>
+          <h1>Mandatory branch rules for AI agents — enforced locally.</h1>
+          <p class="hero-lead">
+            Provider-agnostic policy for Cursor, Claude Code, Codex, Gemini, and
+            more. <code>AGENTS.md</code> sets the rules; hooks fail early when
+            they are broken.
+          </p>
+          <div class="cta-row">
+            <a
+              class="btn btn-primary"
+              href="https://github.com/nguyenad1905/gitflow-policy-v3"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on GitHub</a
+            >
+            <a class="btn btn-ghost" href="#setup">Install hooks</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <svg
+            class="flow-art"
+            viewBox="0 0 640 420"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="lane" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0d7377" stop-opacity="0.9" />
+                <stop offset="100%" stop-color="#14919b" stop-opacity="0.55" />
+              </linearGradient>
+            </defs>
+            <path
+              class="path-draw"
+              d="M80 90 H220 C280 90 280 210 340 210 H560"
+              fill="none"
+              stroke="url(#lane)"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <path
+              class="path-draw path-delay"
+              d="M80 330 H220 C280 330 280 210 340 210"
+              fill="none"
+              stroke="#c45c26"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-opacity="0.85"
+            />
+            <path
+              class="path-draw path-delay-2"
+              d="M520 232 V302 H560"
+              fill="none"
+              stroke="#1a1f24"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-opacity="0.35"
+            />
+            <g class="node-fade">
+              <rect x="40" y="68" width="120" height="44" rx="8" fill="#1a1f24" />
+              <text x="100" y="96" text-anchor="middle" fill="#f4f7f8" font-family="IBM Plex Mono, monospace" font-size="14">feature/*</text>
+            </g>
+            <g class="node-fade node-delay">
+              <rect x="40" y="308" width="120" height="44" rx="8" fill="#1a1f24" />
+              <text x="100" y="336" text-anchor="middle" fill="#f4f7f8" font-family="IBM Plex Mono, monospace" font-size="14">bugfix/*</text>
+            </g>
+            <g class="node-fade node-delay-2">
+              <rect x="470" y="188" width="100" height="44" rx="8" fill="#0d7377" />
+              <text x="520" y="216" text-anchor="middle" fill="#f4f7f8" font-family="IBM Plex Mono, monospace" font-size="14">develop</text>
+            </g>
+            <g class="node-fade node-delay-3">
+              <rect x="560" y="280" width="72" height="44" rx="8" fill="#c45c26" />
+              <text x="596" y="308" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono, monospace" font-size="14">main</text>
+            </g>
+            <text
+              class="node-fade node-delay-2"
+              x="400"
+              y="178"
+              fill="#5a6570"
+              font-family="IBM Plex Mono, monospace"
+              font-size="12"
+            >
+              PR →
+            </text>
+            <text
+              class="node-fade node-delay-3"
+              x="545"
+              y="270"
+              fill="#5a6570"
+              font-family="IBM Plex Mono, monospace"
+              font-size="12"
+            >
+              PR →
+            </text>
+          </svg>
+        </div>
+      </section>
+
+      <section id="flow" class="section">
+        <h2>One promotion path</h2>
+        <p class="section-lead">
+          Work lands on develop first; main stays release-only.
+        </p>
+        <pre class="flow-block" tabindex="0"><code>feature/* ──┐
+            ├── PR → develop → PR → main
+bugfix/* ──┘</code></pre>
+      </section>
+
+      <section id="rules" class="section section-rules">
+        <h2>Hard requirements for agents</h2>
+        <p class="section-lead">
+          From <code>AGENTS.md</code> — do not reinterpret, soften, or bypass.
+        </p>
+        <ol class="rules-list">
+          <li>
+            Edit only on <code>feature/*</code> or <code>bugfix/*</code>. Create
+            the branch before the first change.
+          </li>
+          <li>
+            Commit and push only on work branches — never on
+            <code>main</code>, <code>develop</code>, or detached HEAD.
+          </li>
+          <li>Never push directly to protected branches.</li>
+          <li>
+            PR targets:
+            <code>feature/*|bugfix/* → develop</code>, then
+            <code>develop → main</code>.
+          </li>
+          <li>
+            Never skip hooks with <code>--no-verify</code> or similar bypasses.
+          </li>
+        </ol>
+      </section>
+
+      <section id="hooks" class="section">
+        <h2>Local hooks reinforce the policy</h2>
+        <p class="section-lead">
+          Fail early in the workspace — independent of any AI vendor.
+        </p>
+        <ul class="hooks-list">
+          <li>
+            <strong>pre-commit</strong> — blocks commits outside
+            <code>feature/*</code> / <code>bugfix/*</code>
+          </li>
+          <li>
+            <strong>pre-push</strong> — blocks pushes to
+            <code>main</code>, <code>develop</code>, or other non-work branches
+          </li>
+          <li>
+            <strong>post-checkout</strong> — warns when you land on a protected
+            branch
+          </li>
+        </ul>
+      </section>
+
+      <section id="setup" class="section section-setup">
+        <h2>Local setup</h2>
+        <p class="section-lead">
+          Run once after cloning. Needs Git (on Windows: Git for Windows + Git
+          Bash).
+        </p>
+        <pre class="setup-block" tabindex="0"><code>./scripts/setup-git-hooks.sh
+git config --get core.hooksPath
+# Expected: .githooks</code></pre>
+        <p class="setup-note">
+          Then work as usual on a feature branch, push, and open
+          <code>feature/* → develop</code>. Promote releases with
+          <code>develop → main</code>.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a
+          href="https://github.com/nguyenad1905/gitflow-policy-v3"
+          target="_blank"
+          rel="noopener noreferrer"
+          >nguyenad1905/gitflow-policy-v3</a
+        >
+        — provider-agnostic GitFlow for AI agents.
+      </p>
+    </footer>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

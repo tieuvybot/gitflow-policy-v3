@@ -10,6 +10,17 @@ feature/* ──┐
 bugfix/* ──┘
 ```
 
+## Landing page
+
+Project intro site (Vite): see [`landing/`](./landing/).
+
+```bash
+cd landing
+npm install
+npm run build   # output → landing/dist
+npm run dev     # local preview
+```
+
 ## Local setup
 
 Run once after cloning (each workspace). Needs **Git** (on Windows: **Git for Windows** + **Git Bash**).
